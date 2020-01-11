@@ -9,6 +9,15 @@ const Web3 = require('web3')
 const buildGroth16 = require('websnark/src/groth16')
 const websnarkUtils = require('websnark/src/utils')
 const { toWei, fromWei } = require('web3-utils')
+const IPFS_RESOURCES = {
+  CIRCUITS: {
+      'withdraw.json': 'https://cloudflare-ipfs.com/ipfs/QmS5DQ7gghzJM1eYjPffAMTDstfn8ozrjzsC5wnSWMLLk9',
+      'Verifier.sol': 'https://cloudflare-ipfs.com/ipfs/QmPfpoQ8drztAiuojzQ4TkwuX6s7m8RYMJ4eMwiafPypdD',
+      'withdraw.json': 'https://cloudflare-ipfs.com/ipfs/QmS5DQ7gghzJM1eYjPffAMTDstfn8ozrjzsC5wnSWMLLk9',
+      'withdraw_proving_key.bin': 'https://cloudflare-ipfs.com/ipfs/QmdtWTP3bZyAGTpXuH2op7vCdZzm75Qexzop5RdrwhwNyg',
+      'withdraw_proving_key.json': 'https://cloudflare-ipfs.com/ipfs/QmUHHt96FRpzBTpDepyzqF4dDmZZwA8KuPQqzHHTCkFfp7'
+  }
+};
 
 let web3, tornado, erc20tornado, circuit, proving_key, groth16, erc20;
 let MERKLE_TREE_HEIGHT;
@@ -108,6 +117,11 @@ async function generateMerkleProof(contract, deposit) {
  * @param refund Receive ether for exchanged tokens
  */
 async function generateProof(contract, note, recipient, relayer = 0, fee = 0, refund = 0) {
+  
+  circuit = await (await fetch(IPFS_RESOURCES.CIRCUITS['withdraw.json'])).json()
+  proving_key = await (await fetch(IPFS_RESOURCES.CIRCUITS['withdraw_proving_key.bin'])).arrayBuffer()
+
+  
   // Decode hex string and restore the deposit object
   let buf = Buffer.from(note.slice(2), 'hex')
   let deposit = createDeposit(bigInt.leBuff2int(buf.slice(0, 31)), bigInt.leBuff2int(buf.slice(31, 62)))
@@ -267,8 +281,6 @@ async function init(web3Instance, amount, chainId, asset, data) {
   contractJson = await (await fetch('build/contracts/ETHTornado.json')).json()
   erc20tornadoJson = await (await fetch('build/contracts/ERC20Tornado.json')).json()
   erc20ContractJson = await (await fetch('build/contracts/ERC20Mock.json')).json()
-  circuit = await (await fetch('build/circuits/withdraw.json')).json()
-  proving_key = await (await fetch('build/circuits/withdraw_proving_key.bin')).arrayBuffer()
   MERKLE_TREE_HEIGHT = 20
   
   const contractAddress = data.mixers[asset.toLowerCase()][`mixerAddress`][amount.toString()];
