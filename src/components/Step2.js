@@ -44,6 +44,10 @@ export default function Step2(props){
             alert.error("Please enter a valid address!");
             return;
         }
+        if(selectedOption === 'new'){
+            const backedup = window.confirm('Please confirm you back up your private key!');
+            if(!backedup) return false;
+        } 
         
         props.onComplete(address, type, pkey);
     }

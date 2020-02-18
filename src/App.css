@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -47,22 +51,22 @@ img {
   vertical-align: middle;
 }
 
+
 .wrapper {
-  height: 100vh;
-  display: flex;
+  display: block;
 }
+
+
 .wrapper .image-holder {
-  width: 60%;
+  width: 100%;
+  padding-bottom: 50px;
+  height: 70vh;
 }
+
 .wrapper .form-content {
-  width: 40%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  width: 100%;
   padding-left: 4.3%;
   padding-right: 4.3%;
-  position: relative;
-  overflow: auto;
 }
 
 .image-holder {
@@ -73,6 +77,23 @@ img {
 .form-content {
   background: url("./images/form-wizard-bg.jpg") center center;
   background-size: cover;
+}
+
+.readable-content{
+  min-height: 200px;
+  width: 100%;
+  max-width: 1024px;
+  margin: auto;
+}
+
+.cta-wrapper {
+  margin: auto;
+  width: 300px;
+  text-align: center
+}
+
+.cta {
+  font-size: 27px !important;
 }
 
 .info {
@@ -88,27 +109,36 @@ img {
   font-family: 'Courier New', Courier, monospace;
 }
 
+.separator-info {
+  border-top: 1px solid rgba(255,255,255,0.5);
+  width: 300px;
+  margin: auto;
+}
+
 h1.title {
-  margin-top: 100px;
+  padding-top: 95px;
   font-size: 100px;
   text-align: center;
   font-family: 'Roboto', sans-serif;
   font-weight: 900px;
+  text-shadow: #a1a0a0 1px 1px 1px;
 }
 
 h2.subtitle {
-  position: absolute;
   margin: auto;
-  bottom: 135px;
-  font-size: 50px;
+  margin-top: 40vh;
+  margin-bottom: 50px;
+  font-size: 40px;
   text-align: center;
-  width: 60%;
-  padding: 360px;
-  padding-top: 0px;
-  padding-bottom: 0px;
+  width: 100%;
   font-family: 'Roboto', sans-serif;
   font-weight: 900;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  text-shadow: #a1a0a0 1px 1px 1px;
 }
+
+
 
 h3 {
   font-size: 32px;
@@ -119,8 +149,22 @@ h3 {
   font-weight: 500;
 }
 
+.intro-link{
+  font-weight: bold;
+  color: white;
+}
+
+.features {
+  margin-bottom: 100px;
+}
+
 .selected-tab {
   background: transparent;
+}
+
+.react-tabs{
+  padding-top: 60px;
+  padding-bottom: 70px;
 }
 
 .react-tabs__tab {
@@ -257,8 +301,9 @@ section label {
 
 .connected-account {
   flex: 0;
-  margin-top: 20px;
+  padding-top: 20px;
   text-align: center;
+  font-size: 17px;
 
 }
 
@@ -269,7 +314,7 @@ section label {
   padding: 15px 0px;
   font-family: 'Courier New', Courier, monospace;
   color: white;
-  font-size: 20px;
+  font-size: 23px;
   flex: 0;
   display: flex;
   justify-content: center;
@@ -320,7 +365,7 @@ section label {
   padding: 15px;
   text-align: left;
   font-size: 18px;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
 }
 
 .mix-info li {
@@ -400,10 +445,11 @@ li.note {
 }
 
 .intro {
-  margin-top: 40px;
-  margin-bottom: 30px;
+  padding-top: 40px;
+  padding-bottom: 30px;
 }
 .intro h3 {
+  padding-top: 50px;
   margin-bottom: 35px;
 }
 
@@ -436,12 +482,16 @@ li.note {
   color: white;
   text-decoration: underline;
 }
-
+.footer {
+  padding-top: 100px;
+  position: relative;
+  margin-top: 30px;
+}
 .warning-wrapper {
   position: absolute;
   margin: auto;
   text-align: center;
-  width: 60%;
+  width: 100%;
   padding: 10px;
   bottom: 30px;
 }
@@ -467,7 +517,7 @@ li.note {
 #disconnect {
   background: transparent;
   color: white;
-  font-size: 12px;
+  font-size: 14px;
   text-align: right;
   border: none;
   cursor: pointer;
@@ -546,6 +596,8 @@ li.note {
 
 .loading-wrapper {
   flex: 1;
+  padding-top: 60px;
+  padding-bottom: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -574,66 +626,32 @@ li.note {
 }
 
 .start-again {
-  margin-bottom: 30px;
+  margin-bottom: 60px;
 }
 
 /****  RESPONSIVE ****/
 
-@media (max-width: 1800px) {
-  h2.subtitle {
-    font-size: 40px;
-    padding: 17%;
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-}
+
 
 @media (max-width: 1280px) {
   h2.subtitle {
     font-size: 35px;
-    padding: 16%;
-    padding-top: 0px;
-    padding-bottom: 0px;
   }
 }
 
-
-
-@media (max-width: 991px) {
-  .wrapper .image-holder {
-    height: 35vh;
-  }
-  .wrapper .form-content {
-    height: 65vh;
-  }
-
-  h1.title {
-    font-size: 50px;
-    margin-top: 0px;
-    padding-top: 20px;
-  }
-
-  h2.subtitle {
-    font-size: 20px;
-    position: relative;
-    margin-top: 225px;
-    margin-bottom: 0px;
-    bottom: 20px;
-    width: 70%;
-    padding: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-
-}
 
 @media (max-width: 767px) {
+
+  h1.title {
+    font-size: 60px;
+  }
+
   h3 {
     font-size: 30px;
     margin-bottom: 30px;
   }
 
-  .image-holder {
+  .image-holdfer {
     background: url("./images/form-wizard.jpg") center center;
     background-size: cover;
     min-height: 350px;
@@ -694,6 +712,7 @@ li.note {
   .intro p{
     font-size: 16px;
   }
+
 
   .connected-account {
     margin-bottom: 50px;

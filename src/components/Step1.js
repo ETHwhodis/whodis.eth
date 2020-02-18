@@ -5,7 +5,7 @@ import Button from './Button';
 const options = [
   { value: 'low', label: 'Low ~ 6 hours' },
   { value: 'medium', label: 'Medium ~ 12 hours' },
-  { value: 'high', label: 'Hig ~ 24 hours' },
+  { value: 'high', label: 'High ~ 24 hours' },
 ];
 
 export default function Step1(props){

@@ -12,7 +12,6 @@ import 'react-tabs/style/react-tabs.css';
 import { renderShortAddress } from "../utils/address";
 import PendingWithdrawal from "./PendingWithdrawal";
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
-import ClipLoader from "react-spinners/ClipLoader";
 import { useAlert } from 'react-alert'
 import Complete from "./Complete";
 import constants from '../utils/constants';
@@ -23,11 +22,20 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import Axios from "axios";
 import ENS from "ethereum-ens";
 import ENSPublicResolverAbi from "../abi/ENSPublicResolverAbi";
+import ClipLoader from "react-spinners/ClipLoader";
+
 
 import {
     BrowserView,
     MobileView,
   } from "react-device-detect";
+import Button from "./Button";
+import FooterLinks from "./FooterLinks";
+import FooterWarning from "./FooterWarning";
+import Features from "./Features";
+import Problem from "./Problem";
+import Loader from "./Loader";
+import RelayerError from "./RelayerError";
 
 const { INFURA_API_KEY } = constants;
 
@@ -69,6 +77,10 @@ export default function Content() {
         ...getInitialState()
     }
 
+    const scrollToContent = (e) => {
+        const element = document.querySelector(".react-tabs");
+        element.scrollIntoView();
+    }
 
     const [selectedIndex, setSelectedIndex] = useState(initialState.selectedIndex);
     const [anonimity, setAnonimity] = useState(initialState.anonimity);
@@ -100,8 +112,7 @@ export default function Content() {
 
     const getRelayerENS = () => {
 
-        const currentChain = chainId || window.ethereum && parseInt(window.ethereum.networkVersion, 10);
-        console.log('GETTING RELAYER ENS', currentChain, chainId);
+        const currentChain = chainId || (window.ethereum && parseInt(window.ethereum.networkVersion, 10));
         if(currentChain && currentChain === 42){
             return `kovan.${RELAYER_ENS}`;
         }
@@ -159,6 +170,10 @@ export default function Content() {
                 
                 // 3 - Connect to ethereum provider
                 attemptToConnectToProvider(result.data);
+                if(selectedIndex !== 0){
+                    console.log('scrolling!');
+                    setTimeout(() => { scrollToContent() }, 500);
+                }
 
             } catch(e){
                 setRelayerError(true);
@@ -289,7 +304,7 @@ export default function Content() {
             let r;
             if(choice === 'relayer') {
                 if(asset.toLowerCase() === 'eth'){
-                    r = await withdrawRelay(note, address, relayerUrl);
+                    r = await withdrawRelay(amount, note, address, relayerUrl);
                 } else {
                     r = await withdrawRelayErc20(note, asset, address, relayerUrl)
                 }
@@ -330,7 +345,7 @@ export default function Content() {
 
             let r;
             if(asset.toLowerCase() === 'eth'){
-                r = await withdrawRelay(note, address, relayerUrl);
+                r = await withdrawRelay(amount, note, address, relayerUrl);
             } else {
                 r = await withdrawRelayErc20(note, asset, address, relayerUrl);
             }
@@ -433,20 +448,20 @@ export default function Content() {
 
     const renderIntro = () => selectedIndex === 0 && (
         <div className={'intro'}>
-            <h3>THE PROBLEM</h3>
-            <p>
-                Currently there are large privacy problems in the ethereum ecosystem. The default behavior is to do everything through a single account, which allows all of a user’s activities to be publicly linked to each other. It seems like this can be improved by using multiple addresses, but not really: the transactions you make to send ETH to those addresses themselves reveal the link between them.
-            </p>
-            
-            <p>This greatly hinders adoption of many applications...</p>
-          
-            <p className={'signature'}>- Vitalik Buterin</p>
-
-            <p className={'solution'}><b>whodis.eth</b> is a privacy solution using zkSNARKs built on top of <a href="https://github.com/tornadocash/tornado-core" rel="noopener noreferrer" target="_blank">Tornado Core</a>  for <b>ETH</b>
-            </p>
-           
+            <p className={'solution'}><b>whodis.eth</b> is a privacy solution using zkSNARKs built on top of <a href="https://github.com/tornadocash/tornado-core" rel="noopener noreferrer" target="_blank">Tornado Core</a>  for <b>ETH</b></p>
         </div>
     );
+
+
+    const renderSeparator = () => selectedIndex === 0 && (
+        <div className={'separator-info'} />
+    );
+
+    const renderProblem = () => selectedIndex === 0 && (
+        <Problem />
+    );
+
+    const renderFeatures = () => selectedIndex === 0 && (<Features relayerServiceFee={data.relayerServiceFee} />);
 
 
     const renderWizard = () => !note && (<Tabs 
@@ -494,7 +509,7 @@ export default function Content() {
         if(note && status !== 'complete'){
             
             if(!web3 || !web3.eth){
-                return renderLoader();
+                return <Loader />;
             }
 
             return  (
@@ -561,70 +576,41 @@ export default function Content() {
             </ModalContainer>
     )
     
-    const renderRelayerError = () => (
-        <div className={'loading-wrapper'}>
-            <h2>Our relayer is having issues. <br />
-                Please try again later...
-            </h2>
-        </div>
-    )
-
-    const renderLoader = () =>  (
-            <div className={'loading-wrapper'}>
-                <ClipLoader
-                    size={50}
-                    color={"#3FC7FA"}
-                />
-            </div>
-    );   
-    
-
-    const renderLinks = () => (
-        <div className={'links'}>
-            <a href={constants.LINKS.ABOUT} target='_blank' rel="noopener noreferrer">About</a>
-            {` | `}
-            <a href={constants.LINKS.GITHUB} target='_blank' rel="noopener noreferrer">Github</a>
-            {` | `}
-            <a href={constants.LINKS.TWITTER} target='_blank' rel="noopener noreferrer">Twitter</a>
-        </div>
-    )
-
-    const renderWarning = () => (
-        <div className="warning-wrapper">
-            <div className="warning-text">
-                <span role="img" aria-label="warning">⚠️</span> This project is in beta.  Use at your own risk.<br />
-                By using this website you agree to these  <a className={'terms-link'} href={constants.LINKS.TERMS} target='_blank' rel="noopener noreferrer">Terms</a>
-            </div>
-        </div>
-    );
-
     const renderContent = () => (
         <React.Fragment>
             <BrowserView>{ renderAddressIfAvailable() }</BrowserView>
             { renderIntro() }
             <MobileView>{ renderAddressIfAvailable() }</MobileView>
             { renderWizard() }
+            { renderSeparator() }
+            { renderProblem() }
+            { renderFeatures() }
             { renderPending() }
             { renderModal() }
             { renderComplete() }
-            <MobileView>
-                { renderLinks() }
-                { renderWarning() }
-            </MobileView>
         </React.Fragment>
     );
-    
+
     return (
         <React.Fragment>
             <Hero>
-                <BrowserView>
-                    { renderWarning() }
-                    { renderLinks() }
-                </BrowserView>
+                { selectedIndex === 0 && (
+                    <div className={'cta-wrapper'}>
+                        <Button onClick={scrollToContent} className={'cta'}>GET STARTED</Button>
+                    </div>
+                    )
+                 }
             </Hero>
             <div className="form-content">
-                { data ? renderContent() : relayerError ? renderRelayerError() : renderLoader() }
+                <div className={'readable-content'}>
+                    { data ? renderContent() : relayerError ? <RelayerError /> : <Loader /> }
+                </div>
+                <div className={'footer'}>
+                    <FooterWarning />
+                    <FooterLinks />
+                </div>
             </div>
+            
         </React.Fragment>
     );
 }

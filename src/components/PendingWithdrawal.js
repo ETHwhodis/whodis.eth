@@ -12,7 +12,7 @@ const { ANONIMITY_LEVEL } = constants;
 
 
 export default function PendingWithdrawal(props){
-    const { asset, amount, chainId, depositTime, web3, data } = props;
+    const { asset, amount, depositTime, web3, data } = props;
     const [progress, setProgress] = useState(0);
     const [depositsSince, setDepositsSince] = useState(0);
     const [elapsed_time, setElapsedTime] = useState(0);

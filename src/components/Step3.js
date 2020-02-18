@@ -9,46 +9,11 @@ const { INFURA_API_KEY, MAX_ETH_AMOUNT } = constants;
 
 export default function Step3(props){
     
-    const { asset, chainId, data } = props;
+    const { asset, data } = props;
     const [selectedAmount, setSelectedAmount] = useState(null);
 
     if(!data || !data.mixers) return null;
-    let assets = [];
-    let options = [];
-    if(chainId){
-        assets = Object.keys(data.mixers);
-        options = assets.map(a => ({ value: a.toUpperCase(), label: `${a.toUpperCase()}` }))
-    }
     
-    const customStyles = {
-        option: (provided, state) => ({
-            ...provided,
-            backgroundColor: 'white',
-            border: '1px solid white',
-            borderRadius: 5,
-            color: state.isFocused ? 'black' : 'black',
-            paddingTop: 10,
-            paddingBottom: 10,
-            paddingLeft: 20,
-            paddingRight: 20,
-        }),
-        input: (provided) => ({
-            ...provided,
-            width: 100,
-        }),
-        control: (provided) => ({
-            ...provided,
-           backgroundColor: 'white',
-           width: 150,
-        }),
-        singleValue: (provided, state) => {
-            const opacity = state.isDisabled ? 0.5 : 1;
-            const transition = 'opacity 300ms';
-        
-            return { ...provided, opacity, transition, backgroundColor: 'white', padding: 5 };
-        }
-    }
-
     const selectAmount = (e) => {
         setSelectedAmount(e.target.value);
     }
@@ -57,10 +22,6 @@ export default function Step3(props){
         props.onComplete(parseFloat(selectedAmount));
     }
 
-    const onChange = (asset) => {
-        setSelectedAmount(null);
-        props.onAssetChange(asset.value);
-    }
 
     
     return (

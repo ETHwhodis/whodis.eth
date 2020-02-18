@@ -22,6 +22,7 @@ const constants = {
     LINKS: {
         ABOUT: 'https://hackmd.io/@whodis/about',
         TERMS: 'https://hackmd.io/@whodis/terms',
+        ROADMAP: 'https://hackmd.io/@whodis/roadmap',
         GITHUB: 'https://github.com/ETHwhodis/whodis.eth',
         TWITTER: 'https://twitter.com/EthWhodis',
     }
