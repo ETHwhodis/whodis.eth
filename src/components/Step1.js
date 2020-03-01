@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Select from 'react-select';
-import Button from './Button';
 
 const options = [
   { value: 'low', label: 'Low ~ 6 hours' },
@@ -10,9 +9,11 @@ const options = [
 
 export default function Step1(props){
     
-    const [anonimity, setAnonimity] = useState(options[1]);
+    const { selectedLevel } = props;
 
-    const handleChange = (selectedOption) => setAnonimity(selectedOption);
+    const handleChange = (selectedOption) => {
+        props.onComplete(selectedOption);
+    }
     
     const customStyles = {
         option: (provided, state) => ({
@@ -32,24 +33,19 @@ export default function Step1(props){
         }
     }
 
-    const next = () => {
-        props.onComplete(anonimity.value);
-    }
     
     return (
         <section>
-            <h3>CHOOSE YOUR ANONYMITY LEVEL</h3>
-            <Select
-                value={anonimity}
-                defaultValue={anonimity}
-                onChange={handleChange}
-                options={options}
-                name="anonimity"
-                styles={customStyles}
-            />
-
-            <div className={'section-footer'}>
-                <Button onClick={next}>NEXT</Button>
+            <h3>1 - CHOOSE YOUR ANONYMITY LEVEL</h3>
+            <div className="select-wrapper">
+                <Select
+                    value={selectedLevel}
+                    defaultValue={selectedLevel || options[1]}
+                    onChange={handleChange}
+                    options={options}
+                    name="anonimity"
+                    styles={customStyles}
+                />
             </div>
         </section>
     );
