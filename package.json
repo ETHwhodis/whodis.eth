@@ -120,7 +120,8 @@
     "migrate:kovan": "npx truffle migrate --network kovan --reset",
     "migrate:rinkeby": "npx truffle migrate --network rinkeby --reset",
     "migrate:mainnet": "npx truffle migrate --network mainnet",
-    "ipfs:pin": "npx scripts/ipfs-pin.js"
+    "ipfs:pin": "npx scripts/ipfs-pin.js",
+    "ipfs:deploy": "rm -rf build-ui/build/circuits && npx ipfs-deploy build-ui -p pinata"
   },
   "eslintConfig": {
     "extends": "react-app"
